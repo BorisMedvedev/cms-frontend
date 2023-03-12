@@ -3,8 +3,6 @@
 const overlay = document.querySelector(".overlay ");
 const tableBody = document.querySelector(".table__body");
 
-overlay.classList.remove("active");
-
 const getData = async () => {
   const DB = await fetch(
     "https://gist.githubusercontent.com/Maksim-Methed/0f19797a537855ce881b3b1760734e1e/raw/6fb731c5038ddbd18a46bfe1c4afd9619abbde4e/goods.json"
@@ -13,6 +11,8 @@ const getData = async () => {
   console.log("arr: ", arr);
   return arr;
 };
+
+overlay.classList.remove("active");
 
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
