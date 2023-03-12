@@ -9,14 +9,13 @@
   line-height: 15px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #6E6893;
+  color: #6e6893;
   height: 45px;
 }
 
 .table__header-row {
   height: 45px;
-  background: #F4F2FF;
-
+  background: #f4f2ff;
 }
 
 .table__header-cell_left {
@@ -30,8 +29,8 @@
   text-align: center;
 }
 
-.table__body>tr:not(:last-child) {
-  border-bottom: 1px solid #D9D5EC;
+.table__body > tr:not(:last-child) {
+  border-bottom: 1px solid #d9d5ec;
 }
 
 .table__cell {
@@ -43,7 +42,7 @@
 .table__cell-id {
   position: absolute;
   top: 7px;
-  color: #C5C5C5;
+  color: #c5c5c5;
   text-transform: uppercase;
   font-size: 10px;
 }
