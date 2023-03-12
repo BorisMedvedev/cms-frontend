@@ -5,59 +5,45 @@ const getData = async () => {
     "https://gist.githubusercontent.com/Maksim-Methed/0f19797a537855ce881b3b1760734e1e/raw/6fb731c5038ddbd18a46bfe1c4afd9619abbde4e/goods.json"
   );
   const arr = await DB.json();
+  console.log("arr: ", arr);
   return arr;
 };
 
 const overlay = document.querySelector(".overlay ");
 overlay.classList.remove("active");
 
+const tableBody = document.querySelector(".table__body");
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
-  const goodsTableTdId = document.createElement("td");
-  const goodsTableTdTitle = document.createElement("td");
-  const goodsTableTdTPrice = document.createElement("td");
-  const goodsTableTdTDescription = document.createElement("td");
-  const goodsTableTdCategory = document.createElement("td");
-  const goodsTableTdDiscont = document.createElement("td");
-  const goodsTableTdCount = document.createElement("td");
-  const goodsTableTdUnits = document.createElement("td");
-  const goodsTableTdImages = document.createElement("td");
-  const goodsTableTdImagesSmall = document.createElement("img");
-  const goodsTableTdImagesBig = document.createElement("img");
-
-  goodsTableTdId.textContent = obj.id;
-  goodsTableTdTitle.textContent = obj.title;
-  goodsTableTdTPrice.textContent = obj.price;
-  goodsTableTdTDescription.textContent = obj.description;
-  goodsTableTdCategory.textContent = obj.category;
-  goodsTableTdDiscont.textContent = obj.discont;
-  goodsTableTdCount.textContent = obj.count;
-  goodsTableTdUnits.textContent = obj.units;
-
-  goodsTableTdImagesSmall.src = obj.images.small;
-  goodsTableTdImagesBig.src = obj.images.big;
-
-  goodsTableTdImages.append(goodsTableTdImagesSmall, goodsTableTdImagesBig);
-  goodsTableTR.append(
-    goodsTableTdId,
-    goodsTableTdTitle,
-    goodsTableTdTPrice,
-    goodsTableTdTDescription,
-    goodsTableTdCategory,
-    goodsTableTdCount,
-    goodsTableTdUnits,
-    goodsTableTdImages
-  );
-  document.querySelector(".container").append(goodsTableTR);
-
+  goodsTableTR.innerHTML = `
+  <tr>
+  <td class="table__cell">${obj.id}</td>
+  <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
+  <span class="table__cell-id">id: 24601654816512</span>
+  ${obj.title}
+  </td>
+  <td class="table__cell table__cell_left">${obj.category}</td>
+  <td class="table__cell">${obj.units}</td>
+  <td class="table__cell">${obj.count}</td>
+  <td class="table__cell">$${obj.price}</td>
+  <td class="table__cell">$${obj.count * obj.price}</td>
+  <td class="table__cell table__cell_btn-wrapper">
+  <button class="table__btn table__btn_pic"></button>
+  <button class="table__btn table__btn_edit"></button>
+  <button class="table__btn table__btn_del"></button>
+  </td>
+  </tr>
+  `;
+  tableBody.append(goodsTableTR);
+  console.log("goodsTableTR: ", goodsTableTR);
   return goodsTableTR;
 };
 
 const renderGoods = (array) => {
-  array.forEach((element) => {
-    createRow(element);
+  tableBody.textContent = "";
+  array.forEach((el) => {
+    createRow(el);
   });
-  return array;
 };
 
 getData().then((data) => renderGoods(data));
