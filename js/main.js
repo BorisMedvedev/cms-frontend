@@ -1,5 +1,10 @@
 "use strict";
 
+const overlay = document.querySelector(".overlay ");
+const tableBody = document.querySelector(".table__body");
+
+overlay.classList.remove("active");
+
 const getData = async () => {
   const DB = await fetch(
     "https://gist.githubusercontent.com/Maksim-Methed/0f19797a537855ce881b3b1760734e1e/raw/6fb731c5038ddbd18a46bfe1c4afd9619abbde4e/goods.json"
@@ -9,16 +14,14 @@ const getData = async () => {
   return arr;
 };
 
-const overlay = document.querySelector(".overlay ");
-overlay.classList.remove("active");
-
-const tableBody = document.querySelector(".table__body");
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
   goodsTableTR.innerHTML = `
   <td class="table__cell">${obj.id}</td>
-    <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
-    <span class="table__cell-id">id: 24601654816512</span>
+    <td class="table__cell table__cell_left table__cell_name" data-id="${
+      obj.id
+    }">
+    <span class="table__cell-id">id: ${obj.id}</span>
     ${obj.title}
     </td>
     <td class="table__cell table__cell_left">${obj.category}</td>
@@ -32,16 +35,14 @@ const createRow = (obj) => {
     <button class="table__btn table__btn_del"></button>
   </td>
   `;
-  tableBody.append(goodsTableTR);
-  console.log("goodsTableTR: ", goodsTableTR);
   return goodsTableTR;
 };
 
-const renderGoods = (array) => {
-  tableBody.textContent = "";
+const renderGoods = (app, array) => {
+  app.textContent = "";
   array.forEach((el) => {
-    createRow(el);
+    app.append(createRow(el));
   });
 };
 
-getData().then((data) => renderGoods(data));
+getData().then((data) => renderGoods(tableBody, data));
