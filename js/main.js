@@ -2,17 +2,16 @@
 
 const overlay = document.querySelector(".overlay ");
 const tableBody = document.querySelector(".table__body");
+const addGoods = document.querySelector(".panel__add-goods");
+const modalClose = document.querySelector(".modal__close");
 
 const getData = async () => {
   const DB = await fetch(
     "https://gist.githubusercontent.com/Maksim-Methed/0f19797a537855ce881b3b1760734e1e/raw/6fb731c5038ddbd18a46bfe1c4afd9619abbde4e/goods.json"
   );
   const arr = await DB.json();
-  console.log("arr: ", arr);
   return arr;
 };
-
-overlay.classList.remove("active");
 
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
@@ -44,5 +43,15 @@ const renderGoods = (app, array) => {
     app.append(createRow(el));
   });
 };
+
+addGoods.addEventListener("click", () => {
+  overlay.classList.add("active");
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target === modalClose || e.target === overlay) {
+    overlay.classList.remove("active");
+  }
+});
 
 getData().then((data) => renderGoods(tableBody, data));
