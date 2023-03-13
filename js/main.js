@@ -6,15 +6,14 @@ const addGoods = document.querySelector(".panel__add-goods");
 const modalClose = document.querySelector(".modal__close");
 
 const getData = async () => {
-  const DB = await fetch(
-    "https://gist.githubusercontent.com/Maksim-Methed/0f19797a537855ce881b3b1760734e1e/raw/6fb731c5038ddbd18a46bfe1c4afd9619abbde4e/goods.json"
-  );
+  const DB = await fetch("goods.json");
   const arr = await DB.json();
   return arr;
 };
 
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
+  goodsTableTR.classList.add("trrow");
   goodsTableTR.innerHTML = `
   <td class="table__cell">${obj.id}</td>
     <td class="table__cell table__cell_left table__cell_name" data-id="${
@@ -34,6 +33,7 @@ const createRow = (obj) => {
     <button class="table__btn table__btn_del"></button>
   </td>
   `;
+
   return goodsTableTR;
 };
 
@@ -51,6 +51,14 @@ addGoods.addEventListener("click", () => {
 document.addEventListener("click", (e) => {
   if (e.target === modalClose || e.target === overlay) {
     overlay.classList.remove("active");
+  }
+});
+
+tableBody.addEventListener("click", (e) => {
+  if (e.target.closest(".table__btn_del")) {
+    if (confirm("Точно хотите удалить ?")) {
+      e.target.closest(".trrow").remove();
+    }
   }
 });
 
