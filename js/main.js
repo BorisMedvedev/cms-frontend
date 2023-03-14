@@ -4,6 +4,7 @@ const overlay = document.querySelector(".overlay ");
 const tableBody = document.querySelector(".table__body");
 const addGoods = document.querySelector(".panel__add-goods");
 const modalClose = document.querySelector(".modal__close");
+let dataCopy = [];
 
 const getData = async () => {
   const DB = await fetch("goods.json");
@@ -14,6 +15,7 @@ const getData = async () => {
 const createRow = (obj) => {
   const goodsTableTR = document.createElement("tr");
   goodsTableTR.classList.add("trrow");
+  goodsTableTR.dataset.id = obj.id;
   goodsTableTR.innerHTML = `
   <td class="table__cell">${obj.id}</td>
     <td class="table__cell table__cell_left table__cell_name" data-id="${
@@ -55,11 +57,23 @@ document.addEventListener("click", (e) => {
 });
 
 tableBody.addEventListener("click", (e) => {
+  console.log(e.target);
   if (e.target.closest(".table__btn_del")) {
     if (confirm("Точно хотите удалить ?")) {
+      const id = parseInt(e.target.closest(".trrow").dataset.id);
+      const newData = dataCopy.filter((item) => {
+        return item.id !== id;
+      });
+      console.log("newData: ", newData);
+      console.log("id: ", id);
       e.target.closest(".trrow").remove();
+      dataCopy = newData;
     }
   }
 });
 
-getData().then((data) => renderGoods(tableBody, data));
+getData().then((data) => {
+  dataCopy = data;
+  renderGoods(tableBody, dataCopy);
+  console.log("dataCopy: ", dataCopy);
+});
