@@ -35,8 +35,8 @@ const createRow = obj => {
   goodsTableTR.dataset.id = obj.id;
   goodsTableTR.innerHTML = `
   <td class="table__cell">${obj.id}</td>
-    <td class="table__cell table__cell_left table__cell_name" data-id="${uniqueNumber()}">
-    <span class="table__cell-id">id: ${uniqueNumber()}</span>
+    <td class="table__cell table__cell_left table__cell_name" data-id="${obj.id}">
+    <span class="table__cell-id">id: ${obj.id}</span>
     ${obj.name}
     </td>
     <td class="table__cell table__cell_left">${obj.category}</td>
@@ -88,11 +88,11 @@ tableBody.addEventListener('click', e => {
       const newData = dataCopy.filter(item => {
         return item.id !== id;
       });
+      cmsPrise.textContent = `$${calculateItemPrice(newData)}`;
       console.log('newData: ', newData);
       console.log('id: ', id);
       e.target.closest('.trrow').remove();
       dataCopy = newData;
-      cmsPrise.textContent = `$${calculateItemPrice(dataCopy)}`;
     }
   }
 });
@@ -103,9 +103,11 @@ const formControl = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newContact = Object.fromEntries(formData);
+    console.log('newContact: ', newContact);
 
     addContactData(newContact);
     renderGoods(tableBody, dataCopy);
+    cmsPrise.textContent = `$${calculateItemPrice(dataCopy)}`;
     form.reset();
     overlay.classList.remove('active');
     console.log('newContact: ', newContact);
@@ -115,10 +117,8 @@ formControl();
 
 getData().then(data => {
   dataCopy = data;
-
   renderGoods(tableBody, dataCopy);
+
   console.log('dataCopy: ', dataCopy);
   cmsPrise.textContent = `$${calculateItemPrice(dataCopy)}`;
-
-  renderGoods(tableBody, dataCopy);
 });
