@@ -7,6 +7,7 @@ const modalClose = document.querySelector('.modal__close');
 const cmsPrise = document.querySelector('.cms__total-price');
 const modalPrise = document.querySelector('.modal__total-price');
 let dataCopy = [];
+let count = 1;
 
 const addContactData = contact => {
   dataCopy.push(contact);
@@ -34,7 +35,7 @@ const createRow = obj => {
   goodsTableTR.classList.add('trrow');
   goodsTableTR.dataset.id = obj.id;
   goodsTableTR.innerHTML = `
-  <td class="table__cell">${obj.id}</td>
+  <td class="table__cell">${count++}</td>
     <td class="table__cell table__cell_left table__cell_name" data-id="${obj.id}">
     <span class="table__cell-id">id: ${obj.id}</span>
     ${obj.name}
@@ -81,29 +82,36 @@ const calculateItemPrice = arr => {
 };
 
 tableBody.addEventListener('click', e => {
-  console.log(e.target);
   if (e.target.closest('.table__btn_del')) {
     if (confirm('Точно хотите удалить ?')) {
       const id = parseInt(e.target.closest('.trrow').dataset.id);
       const newData = dataCopy.filter(item => {
         return item.id !== id;
       });
-      cmsPrise.textContent = `$${calculateItemPrice(newData)}`;
-      console.log('newData: ', newData);
+
       console.log('id: ', id);
       e.target.closest('.trrow').remove();
       dataCopy = newData;
+      console.log('dataCopy: ', dataCopy);
+      cmsPrise.textContent = `$${calculateItemPrice(newData)}`;
     }
   }
 });
 
 const formControl = () => {
   const form = document.querySelector('.modal__form');
+
+  form.addEventListener('input', () => {
+    const formCount = document.getElementById('count').value;
+    const formpPice = document.getElementById('price').value;
+    modalPrise.textContent = `$ ${formCount * formpPice}`;
+    console.log('modalPrise.textContent: ', modalPrise.textContent);
+  });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newContact = Object.fromEntries(formData);
-    console.log('newContact: ', newContact);
 
     addContactData(newContact);
     renderGoods(tableBody, dataCopy);
@@ -119,6 +127,6 @@ getData().then(data => {
   dataCopy = data;
   renderGoods(tableBody, dataCopy);
 
-  console.log('dataCopy: ', dataCopy);
   cmsPrise.textContent = `$${calculateItemPrice(dataCopy)}`;
+  console.log('dataCopy: ', dataCopy);
 });
