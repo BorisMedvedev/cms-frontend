@@ -92,19 +92,18 @@ tableBody.addEventListener('click', e => {
       e.target.closest('.trrow').remove();
       dataCopy = newData;
       console.log('dataCopy: ', dataCopy);
-      cmsPrise.textContent = `$ ${calculateItemPrice(newData)}`;
     }
   }
+  cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
 });
 
 const formControl = () => {
   const form = document.querySelector('.modal__form');
 
-  form.addEventListener('input', () => {
+  form.addEventListener('change', () => {
     const formCount = document.getElementById('count').value;
     const formpPice = document.getElementById('price').value;
     modalPrise.textContent = `$ ${formCount * formpPice}`;
-    console.log('modalPrise.textContent: ', modalPrise.textContent);
   });
 
   form.addEventListener('submit', e => {
@@ -125,7 +124,7 @@ formControl();
 getData().then(data => {
   dataCopy = data;
   renderGoods(tableBody, dataCopy);
-
   cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
+
   console.log('dataCopy: ', dataCopy);
 });
