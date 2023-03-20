@@ -7,6 +7,14 @@ const modalClose = document.querySelector('.modal__close');
 const cmsPrise = document.querySelector('.cms__total-price');
 const modalPrise = document.querySelector('.modal__total-price');
 const vendorId = document.querySelector('.vendor-code__id');
+
+const nameInp = document.getElementById('name');
+const categoryInp = document.getElementById('category');
+const unitsInp = document.getElementById('units');
+const descriptionInp = document.getElementById('description');
+const countInp = document.getElementById('count');
+const priceInp = document.getElementById('price');
+const imageInp = document.getElementById('image');
 let dataCopy = [];
 
 const addContactData = contact => {
@@ -91,10 +99,15 @@ tableBody.addEventListener('click', e => {
       e.target.closest('.trrow').remove();
       dataCopy = newData;
       console.log('dataCopy: ', dataCopy);
+      cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
     }
   }
-  cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
 });
+
+// imageInp.onchange = e => {
+//   const [file] = e.target.files;
+//   console.log(file.name);
+// };
 
 const formControl = () => {
   const form = document.querySelector('.modal__form');
@@ -107,15 +120,27 @@ const formControl = () => {
 
   form.addEventListener('submit', e => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const newContact = Object.fromEntries(formData);
 
+    const newContact = {
+      id: +vendorId.textContent,
+      name: nameInp.value,
+      category: categoryInp.value,
+      count: countInp.value,
+      description: descriptionInp.value,
+      discont: false,
+      price: priceInp.value,
+      units: unitsInp.value,
+      images: imageInp.files
+    };
+
+    addContactData(newContact);
     form.reset();
     modalPrise.textContent = `$ 0`;
     overlay.classList.remove('active');
-    addContactData(newContact);
     renderGoods(tableBody, dataCopy);
     console.log('newContact: ', newContact);
+    cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
+    console.log('dataCopy: ', dataCopy);
   });
 };
 
