@@ -6,6 +6,7 @@ const addGoods = document.querySelector('.panel__add-goods');
 const modalClose = document.querySelector('.modal__close');
 const cmsPrise = document.querySelector('.cms__total-price');
 const modalPrise = document.querySelector('.modal__total-price');
+const vendorId = document.querySelector('.vendor-code__id');
 let dataCopy = [];
 
 const addContactData = contact => {
@@ -54,9 +55,6 @@ const createRow = obj => {
   return goodsTableTR;
 };
 
-const vendorId = document.querySelector('.vendor-code__id');
-vendorId.textContent = uniqueNumber();
-
 const renderGoods = (app, array) => {
   app.textContent = '';
   array.forEach(el => {
@@ -66,6 +64,7 @@ const renderGoods = (app, array) => {
 
 addGoods.addEventListener('click', () => {
   overlay.classList.add('active');
+  vendorId.textContent = uniqueNumber();
 });
 
 document.addEventListener('click', e => {
@@ -114,6 +113,7 @@ const formControl = () => {
     addContactData(newContact);
     renderGoods(tableBody, dataCopy);
     form.reset();
+    modalPrise.textContent = `$ 0`;
     overlay.classList.remove('active');
     console.log('newContact: ', newContact);
   });
