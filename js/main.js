@@ -110,11 +110,11 @@ const formControl = () => {
     const formData = new FormData(e.target);
     const newContact = Object.fromEntries(formData);
 
-    addContactData(newContact);
-    renderGoods(tableBody, dataCopy);
     form.reset();
     modalPrise.textContent = `$ 0`;
     overlay.classList.remove('active');
+    addContactData(newContact);
+    renderGoods(tableBody, dataCopy);
     console.log('newContact: ', newContact);
   });
 };
