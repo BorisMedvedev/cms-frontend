@@ -7,7 +7,6 @@ const modalClose = document.querySelector('.modal__close');
 const cmsPrise = document.querySelector('.cms__total-price');
 const modalPrise = document.querySelector('.modal__total-price');
 const vendorId = document.querySelector('.vendor-code__id');
-
 const nameInp = document.getElementById('name');
 const categoryInp = document.getElementById('category');
 const unitsInp = document.getElementById('units');
@@ -15,6 +14,9 @@ const descriptionInp = document.getElementById('description');
 const countInp = document.getElementById('count');
 const priceInp = document.getElementById('price');
 const imageInp = document.getElementById('image');
+const discountInp = document.getElementById('discount');
+const modalInputDiscount = document.querySelector('.modal__input_discount');
+
 let dataCopy = [];
 
 const addContactData = contact => {
@@ -70,10 +72,12 @@ const renderGoods = (app, array) => {
   });
 };
 
-addGoods.addEventListener('click', () => {
+const addGoodsBtn = () => {
   overlay.classList.add('active');
   vendorId.textContent = uniqueNumber();
-});
+};
+
+addGoods.addEventListener('click', addGoodsBtn);
 
 document.addEventListener('click', e => {
   if (e.target === modalClose || e.target === overlay) {
@@ -104,19 +108,26 @@ tableBody.addEventListener('click', e => {
   }
 });
 
-// imageInp.onchange = e => {
-//   const [file] = e.target.files;
-//   console.log(file.name);
-// };
-
 const formControl = () => {
   const form = document.querySelector('.modal__form');
-
-  form.addEventListener('change', () => {
+  const change = () => {
     const formCount = document.getElementById('count').value;
     const formpPice = document.getElementById('price').value;
     modalPrise.textContent = `$ ${formCount * formpPice}`;
-  });
+  };
+
+  const discountInput = () => {
+    if (!discountInp.checked) {
+      modalInputDiscount.disabled = false;
+    } else {
+      modalInputDiscount.disabled = true;
+      modalInputDiscount.value = '';
+    }
+  };
+
+  discountInp.addEventListener('focus', discountInput);
+
+  form.addEventListener('change', change);
 
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -127,7 +138,7 @@ const formControl = () => {
       category: categoryInp.value,
       count: countInp.value,
       description: descriptionInp.value,
-      discont: false,
+      discont: modalInputDiscount.value,
       price: priceInp.value,
       units: unitsInp.value,
       images: imageInp.files
@@ -138,18 +149,13 @@ const formControl = () => {
     modalPrise.textContent = `$ 0`;
     overlay.classList.remove('active');
     renderGoods(tableBody, dataCopy);
-    console.log('newContact: ', newContact);
     cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
-    console.log('dataCopy: ', dataCopy);
   });
 };
 
-formControl();
-
 getData().then(data => {
+  formControl();
   dataCopy = data;
   renderGoods(tableBody, dataCopy);
   cmsPrise.textContent = `$ ${calculateItemPrice(dataCopy)}`;
-
-  console.log('dataCopy: ', dataCopy);
 });
